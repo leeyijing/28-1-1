@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<style>
+tr.border_bottom td {
+    border-bottom:1pt solid black;
+    height:100px;
+}
+tr{
+    font-size:17px;
+}
+
+th.text-center {
+    border: 1px solid black;
+    font-size:18px;
+}
+#removebtn{
+    background-color:transparent;
+    outline:none;
+    border:none;
+    width:10px;
+    height:10px;
+}
+</style>
+<script>
+function areyousure(){
+		var sure=confirm("Are you sure?");
+		if (sure == true){
+		alert("You have successfully redeemed your rewards");
+		window.location.href="/rewards2";
+
+		}
+}
+function remove() {
+    var remove = confirm("Are you sure?");
+    if (remove == true) {
+        var add_points = document.getElementById("cartpointsredeemed").innerHTML;
+        var subtotal = parseInt(document.getElementById("subtotal").innerHTML);
+        subtotal -= parseInt(add_points);
+        document.getElementById("subtotal").innerText=subtotal;
+        document.getElementById("cartitem").remove();
+
+    }
+}
+function remove1() {
+    var remove = confirm("Are you sure?");
+    if (remove == true) {
+        var add_points = document.getElementById("cartpointsredeemed1").innerHTML;
+        var subtotal = parseInt(document.getElementById("subtotal").innerHTML);
+        subtotal -= parseInt(add_points);
+        document.getElementById("subtotal").innerText=subtotal;
+        document.getElementById("cartitem1").remove();
+
+    }
+}
+</script>
+<h1 style="text-align:center;">Checkout Summary</h1>
+<br>
+    <table class="summary" id="summary" style="border:1px solid black; width:90%;text-align:center; margin:auto;height:160px;">
+    <tr>
+
+            <th class="text-center" colspan=2>Reward Item</th>
+            <th class="text-center">Points</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-center">Total Points</th>
+    </tr>
+    {% for checkoutitems in uobcheckout %}
+    <tr class="border_bottom" id="cartitem">
+
+        <td><button onclick="remove()" type="button" id="removebtn"><span class="glyphicon glyphicon-remove"></span></button></td>
+        <td>
+            <img src="static/images/{{checkoutitems.get_image()}}" width="{{ checkoutitems.get_width()}}" height="{{ checkoutitems.get_height() }}" style="display:inline-block;margin-left: -90px; margin-right:50px;:">
+            <p style="display:inline-block">{{checkoutitems.get_type()}}</p>
+        </td>
+        <td id="points">{{checkoutitems.get_points()}}</td>
+        <td id="cartqty">{{checkoutitems.get_quantity()}}</td>
+
+        <td><span id="cartpointsredeemed">{{checkoutitems.get_totalpoints()}}</span> points</td>
+    </tr>
+
+    {% endfor %}
+
+    <tr class="border_bottom">
+        <td colspan=5><span style="float:right;margin-right:55px;">Subtotal: <span id="subtotal">0</span> Points</span></td>
+
+    </tr>
+
+</table>
+
+
+
+<div class="row">
+		<div class="col-md-12"/>
+		<div align="center">
+			  <a href="/catalogueuob"  id="buttoncolor" class="btn btn-default" role="button" style="font-size:15px; width:90px; font-weight:bold; margin-right:50px;">Back</a>
+			  <button type="button"  id="buttoncolor" class="btn btn-default" onclick="areyousure()" type="submit" value="submit" style="font-size:15px; width:100px; font-weight:bold;"><span class=" glyphicon glyphicon-ok"></span> Confirm</button>
+		</div>
+		</div>
+</div>
+    </table>
+{% endblock %}
+<!-- Proceed to checkout-->
